@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+
+
+        <record id="view_data_project_tree" model="ir.ui.view">
+            <field name="name">data.project.tree</field>
+            <field name="model">data.project</field>
+            <field name="arch" type="xml">
+                <tree string="Project">
+                    <field name="project_code" width="10"/>
+                    <field name="name"/>
+                    <field name="teacher"/>
+                    <field name="president"/>
+                    <field name="commitee"/>
+                    <field name="approval_date"/>
+                    <field name="total_name"/>
+                    <field name="total_student_code"/>
+                    <field name="total_major"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_data_project_form" model="ir.ui.view">
+            <field name="name">data.project.form</field>
+            <field name="model">data.project</field>
+            <field name="arch" type="xml">
+
+                <form string="Progress Project" version="7.0">
+                    <button type="object" name="print_report" String="Print all data"/>
+                    <sheet string="prog">
+
+                        <label string="PROJECT NO."/>
+                        <field name="project_code" style="width: 50%%;padding-top:0px;" readonly="1"/>
+
+                        <div class="oe_edit_only">
+                            <label string="ชื่อปริญญานิพนธ์"/>
+                        </div>
+                        <h1>
+                            <field name="name" style="width: 50%%" required="1"/>
+                        </h1>
+                        <label string="รหัสวิชา: "/>
+                        <field style="width: 20%%" name="course" required="1"/>
+                        <label string="อาจารย์ที่ปรึษา:"/>
+                        <field style="width: 20%%;padding-top:0px" name="teacher" required="1"/>
+                        <group>
+                            <field style="width: 20%%" required="1" name="president"/>
+                            <field style="width: 20%%" required="1" name="commitee"/>
+                            <field style="width: 20%%" name="co_teacher"/>
+                            <field style="width: 20%%" name="approval_date"/>
+                        </group>
+
+                        <notebook>
+                            <page string="รายชื่อนักศึกษาที่ทำโปรเจค">
+                                <group colspan="4">
+                                    <field name="student_ids" nolabel="1" widget="one2many_list">
+                                        <tree string="Menu List" editable="bottom" version="7.0">
+                                            <field name="sequence" widget="handle"/>
+                                            <field name="name" on_change="onchange_data_student(name)"/>
+                                            <field name="student_code"/>
+                                            <field name="major"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_data_project" model="ir.actions.act_window">
+            <field name="name">ข้อมูลปริญญานิพพนธ์</field>
+            <field name="res_model">data.project</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" eval="False"/>
+            <field name="context">{}</field>
+            <field name="help">คลิ๊ก creat เพื่อ สร้างโปรเจค</field>
+
+        </record>
+
+        <menuitem action="action_data_project" id="menu_action_data_project"
+                  parent="progrss_project_project" sequence="1"/>
+
+    </data>
+</openerp>

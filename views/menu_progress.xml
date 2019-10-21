@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--main menu-->
+        <menuitem name="progress project" id="base.progress_project_root"
+                  sequence="1"/>
+
+        <!--sub menu-->
+        <menuitem name="Project" id="progrss_project_project"
+                  parent="base.progress_project_root"
+                  sequence="1"/>
+
+        <!--sub menu-->
+        <menuitem name="Configuration" id="progrss_project_configuration"
+                  parent="base.progress_project_root"
+                  sequence="2"/>
+
+
+    </data>
+</openerp>

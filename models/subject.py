@@ -2,10 +2,13 @@
 from openerp.osv import osv, fields
 
 
-class InputSubject(osv.model):
+class InputSubject(osv.Model):
     'model for put subjectname'
     _name = "input.subject"
 
     _columns = {
-        'name': fields.char('ชื่อวิชา', size=40),
+        'name': fields.char(
+         string = 'ชื่อวิชา',
+         required = True,
+        ),
     }
