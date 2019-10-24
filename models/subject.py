@@ -4,7 +4,7 @@ from openerp.osv import osv, fields
 
 class InputSubject(osv.Model):
     'model for put subjectname'
-    _name = "input.subject"
+    _name = 'input.subject'
 
     _columns = {
         'name': fields.char(

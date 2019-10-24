@@ -4,7 +4,7 @@ from openerp.osv import osv, fields
 
 class InputTeacher(osv.Model):
     'model for put Teacher name'
-    _name = "input.teacher"
+    _name = 'input.teacher'
 
     _columns = {
         'name': fields.char(
@@ -20,3 +20,16 @@ class InputTeacher(osv.Model):
             required=True,
         ),
     }
+
+    def create(self, cr, uid, value, context=None):
+        res = super(InputTeacher, self).create(cr, uid, value, context=context)
+        cr.execute('''
+                    INSERT INTO project_summary
+                    (name) 
+                    values      (%s)
+                    
+                ''',(value.get('name'), ))
+
+        return res
+
+

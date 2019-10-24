@@ -14,6 +14,8 @@
              'views/input_teacher_view.xml',
              'views/input_student_view.xml',
              'views/data_project_view.xml',
+             'report/call_report.xml',
+             'views/project_summary_view.xml',
              ],
     'update_xml': [],
     'installable': True,

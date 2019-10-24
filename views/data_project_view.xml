@@ -10,7 +10,7 @@
                 <tree string="Project">
                     <field name="project_code" width="10"/>
                     <field name="name"/>
-                    <field name="teacher"/>
+                    <field name="advisor"/>
                     <field name="president"/>
                     <field name="commitee"/>
                     <field name="approval_date"/>
@@ -42,7 +42,7 @@
                         <label string="รหัสวิชา: "/>
                         <field style="width: 20%%" name="course" required="1"/>
                         <label string="อาจารย์ที่ปรึษา:"/>
-                        <field style="width: 20%%;padding-top:0px" name="teacher" required="1"/>
+                        <field style="width: 20%%;padding-top:0px" name="advisor" required="1"/>
                         <group>
                             <field style="width: 20%%" required="1" name="president"/>
                             <field style="width: 20%%" required="1" name="commitee"/>
@@ -55,8 +55,9 @@
                                 <group colspan="4">
                                     <field name="student_ids" nolabel="1" widget="one2many_list">
                                         <tree string="Menu List" editable="bottom" version="7.0">
-                                            <field name="sequence" widget="handle"/>
-                                            <field name="name" on_change="onchange_data_student(name)"/>
+                                            <field name="sequence" widget="handle" />
+                                            <field name="name" on_change="onchange_data_student(name)"
+                                                    domain="[('in_project','=',False)]"/>
                                             <field name="student_code"/>
                                             <field name="major"/>
                                         </tree>

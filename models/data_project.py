@@ -5,7 +5,7 @@ import datetime
 
 class DataProject(osv.Model):
     'model for put data like projectname advisor student blahhh'
-    _name = "data.project"
+    _name = 'data.project'
 
     _columns = {
         'name': fields.char(
@@ -19,7 +19,7 @@ class DataProject(osv.Model):
             'input.subject',
             string='รหัสวิชา',
         ),
-        'teacher': fields.many2one(
+        'advisor': fields.many2one(
             'input.teacher',
             string='อาจารย์ที่ปรึกษา',
         ),
@@ -43,14 +43,17 @@ class DataProject(osv.Model):
             'student_id',
             string="รายชื่อนักศึกษาที่ทำโปรเจค",
         ),
-        'total_name': fields.char(
+        'total_name': fields.text(
             string='ชื่อนักศึกษาที่ทำโปรเจค',
         ),
-        'total_student_code': fields.char(
+        'total_student_code': fields.text(
             string='รหัสประจำตัวนักศีกษา',
         ),
-        'total_major': fields.char(
+        'total_major': fields.text(
             string='สาขา',
+        ),
+        'grade': fields.text(
+            string='เกรด',
         ),
 
     }
@@ -70,16 +73,21 @@ class DataProject(osv.Model):
         total_name = ''
         total_student_code = ''
         total_major = ''
+        id_student = []
         for data_student in value.get('student_ids'):
             cr.execute('''
                         SELECT    name
                         FROM      input_student
                         WHERE     id = %s
                     ''', (data_student[2].get('name'),))
-            name_rec = cr.dictfetchall()[0]
-            total_name += name_rec.get('name') + '\n'
+            rec = cr.dictfetchall()[0]
+            total_name += rec.get('name') + '\n'
             total_student_code += data_student[2].get('student_code') + '\n'
             total_major += data_student[2].get('major') + '\n'
+            id_student.append(data_student[2].get('name'))
+        #chaenge fields in_project
+        self.change_status_student(cr,state=True,stu_id=id_student)
+
 
         value.update({
             'project_code': 'PJ-%s-%s' % (years, number_project),
@@ -90,14 +98,16 @@ class DataProject(osv.Model):
         return super(DataProject, self).create(cr, uid, value, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
+        id_student_true = []
+        id_student_false = []
         if vals.get('student_ids', False):
             total_name = ''
             total_student_code = ''
             total_major = ''
             for data_student in vals.get('student_ids'):
-                if data_student[0] == 4:
+                if data_student[0] == 4: #replace
                     cr.execute('''
-                            select pip.name,in_s.name,in_s.student_code,in_s.major
+                            select in_s.id,pip.name,in_s.name,in_s.student_code,in_s.major
                             from (select name 
                                   from provider_in_project
                                   where id = %s
@@ -106,22 +116,39 @@ class DataProject(osv.Model):
                                         from input_student
                                     ) in_s on pip.name = in_s.id
                         ''', (data_student[1], ))
-                    name_rec = cr.dictfetchall()[0]
-                    total_name += name_rec.get('name') + '\n'
-                    total_student_code += name_rec.get('student_code') + '\n'
-                    total_major += name_rec.get('major') + '\n'
+                    rec = cr.dictfetchall()[0]
+                    total_name += rec.get('name') + '\n'
+                    total_student_code += rec.get('student_code') + '\n'
+                    total_major += rec.get('major') + '\n'
+                    id_student_true.append(rec.get('id'))
 
 
-                elif  data_student[0] == 0:
+                if  data_student[0] == 0: #update
                     cr.execute('''
                                     SELECT    name
                                     FROM      input_student
                                     WHERE     id = %s
                                 ''', (data_student[2].get('name'),))
-                    name_rec = cr.dictfetchall()[0]
-                    total_name += name_rec.get('name') + '\n'
+                    rec = cr.dictfetchall()[0]
+                    total_name += rec.get('name') + '\n'
                     total_student_code += data_student[2].get('student_code') + '\n'
                     total_major += data_student[2].get('major') + '\n'
+                    id_student_true.append(data_student[2].get('name'))
+
+                if data_student[0] == 2: #delete
+                    cr.execute('''
+                            select in_s.id,pip.name,in_s.name,in_s.student_code,in_s.major
+                            from (select name 
+                                  from provider_in_project
+                                  where id = %s
+                                    ) pip 
+                            inner join ( select id,name,student_code,major
+                                        from input_student
+                                    ) in_s on pip.name = in_s.id
+                        ''', (data_student[1], ))
+                    rec = cr.dictfetchall()[0]
+                    id_student_false.append(rec.get('id'))
+
 
                 if len(total_name)>1:
                     vals.update({
@@ -130,7 +157,34 @@ class DataProject(osv.Model):
                     'total_major': total_major,
                     })
 
+                if id_student_true:
+                    self.change_status_student(cr, state=True, stu_id=id_student_true)
+                if id_student_false:
+                    self.change_status_student(cr, state=False, stu_id=id_student_false)
+
         return super(DataProject, self).write(cr, uid, ids, vals, context=context)
+
+    def change_status_student(self,cr,stu_id,state):
+        cr.execute('''
+            UPDATE  input_student
+            SET     in_project = %s
+            where   id in %s
+        ''',(state,tuple(stu_id), ))
+
+    def print_report(self, cr, uid, ids, context=None):
+        datas = {
+            'model': 'data.project',
+            'ids': ids,
+            'form': self.pool.get('data.project').read(cr, uid, ids, context=context),
+        }
+
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'data_project_report',
+            'datas': datas,
+            'nodestroy': True
+        }
+
 
 
 class ProviderInProject(osv.Model):

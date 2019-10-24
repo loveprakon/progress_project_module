@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+
+    <data>
+        <report
+                id="data_project_report"
+                model="data.project"
+                name="data_project_report"
+                string="รายชื่อปริญญานิพนธ์"
+                rml="progress_project_module/report/data_project_report.rml"
+                header="False"/>
+    </data>
+
+
+</openerp>
+
+

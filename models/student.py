@@ -21,6 +21,13 @@ class InputStudent(osv.Model):
         'major': fields.char(
             string = 'ชื่อย่อสาขา',
             required = True),
+        'in_project' : fields.boolean(
+            string = 'in_project'
+        )
+    }
+
+    _defaults = {
+        'in_project': 0,
     }
 
     def create(self,cr, uid, value, context=None):
