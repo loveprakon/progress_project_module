@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+
+
+        <record id="view_input_student_tree" model="ir.ui.view">
+            <field name="name">input.student.tree</field>
+            <field name="model">input.student</field>
+            <field name="arch" type="xml">
+                <tree string="student">
+                    <field name="name" />
+                    <field name="student_code"/>
+                    <field name="major" />
+                </tree>
+            </field>
+        </record>
+
+        <!--progress project Form View-->
+        <record id="view_input_student_form" model="ir.ui.view">
+            <field name="name">input.student.form</field>
+            <field name="model">input.student</field>
+            <field name="arch" type="xml">
+
+                <form string="student" version="7.0">
+                    <sheet string="student">
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="first_name" />
+                            </div>
+                            <h1>
+                                <field name="first_name" placeholder="ชื่อ" required="1"/>
+                            </h1>
+                            <div class="oe_edit_only">
+                                <label for="last_name" />
+                            </div>
+                            <h1>
+                                <field name="last_name" placeholder="นาม-สกุล" required="1"/>
+                            </h1>
+                            <div class="oe_edit_only">
+                                <label for="student_code"/>
+                            </div>
+                            <h2>
+                                <field name="student_code"  placeholder="รหัสนักศึกษา" required="1"/>
+                            </h2>
+                            <div class="oe_edit_only">
+                                <label for="major"/>
+                            </div>
+                            <h2>
+                                <field name="major" placeholder="EnET-t"  required="1"/>
+                            </h2>
+                        </div>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+
+        <record id="action_input_student" model="ir.actions.act_window">
+            <field name="name">รายชื่อนักศึกษา</field>  <!--ชื่อเมนูย่อย-->
+            <field name="res_model">input.student</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" eval="False"/>
+            <field name="context">{}</field>
+            <field name="help">คลิ๊ก Creat เพื่อเพิ่มนักศึกษา</field>
+        </record>
+
+        <menuitem action="action_input_student" id="menu_action_input_student"
+                  parent="progrss_project_configuration" sequence="4"/>
+    </data>
+</openerp>

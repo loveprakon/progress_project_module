@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <record id="view_input_subject_tree" model="ir.ui.view">
+            <field name="name">input.subject.tree</field>
+            <field name="model">input.subject</field>
+            <field name="arch" type="xml">
+                <tree string="subject">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_input_subject_form" model="ir.ui.view">
+            <field name="name">input.subject.form</field>
+            <field name="model">input.subject</field>
+            <field name="arch" type="xml">
+                <form string="Subject" version="7.0">
+                    <sheet>
+                        <field name="name" placeholder="รายชื่อวิชา" style="width: 50%%"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_input_subject" model="ir.actions.act_window">
+            <field name="name">รายชื่อวิชา</field>
+            <field name="res_model">input.subject</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" eval="False"/>
+            <field name="context">{}</field>
+            <field name="help">คลิ๊ก creat เพื่อ สร้างรายชื่อวิชา</field>
+
+        </record>
+
+        <menuitem action="action_input_subject" id="menu_action_input_subject"
+                  parent="progrss_project_configuration" sequence="1"/>
+
+
+    </data>
+</openerp>
