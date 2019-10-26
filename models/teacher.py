@@ -25,10 +25,10 @@ class InputTeacher(osv.Model):
         res = super(InputTeacher, self).create(cr, uid, value, context=context)
         cr.execute('''
                     INSERT INTO project_summary
-                    (name) 
-                    values      (%s)
+                    (name,monogram) 
+                    values      (%s,%s)
                     
-                ''',(value.get('name'), ))
+                ''',(value.get('name'),value.get('monogram')))
 
         return res
 
