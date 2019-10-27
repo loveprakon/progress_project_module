@@ -89,7 +89,7 @@
                         <para style="THS">[[l.name]]</para>
                     </td>
                     <td>
-                        <para style="THS">[[l.teacher.monogram]]</para>
+                        <para style="THS">[[l.advisor.monogram]]</para>
                     </td>
                     <td>
                         <para style="THS">[[l.president.monogram]]</para>
