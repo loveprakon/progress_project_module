@@ -9,20 +9,19 @@ class ScoreSummary(osv.Model):
 
     _columns = {
         'name': fields.char(
-            string='ชื่อโปรเจค',
-            required=True,
+            string='ชื่อนักศึกษา',
+        ),
+        'student_code': fields.char(
+            string='รหัสนักศึกษา',
         ),
         'major': fields.char(
-            string='',
-            required=True,
+            string='สาขา',
         ),
         'point': fields.char(
-            string='ชื่อโปรเจค',
-            required=True,
+            string='คะแนน',
         ),
         'grade': fields.char(
-            string='ชื่อโปรเจค',
-            required=True,
+            string='เกรด',
         ),
 
     }

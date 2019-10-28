@@ -16,6 +16,7 @@
              'views/data_project_view.xml',
              'report/call_report.xml',
              'views/project_summary_view.xml',
+             'views/score_summary_view.xml',
              ],
     'update_xml': [],
     'installable': True,
