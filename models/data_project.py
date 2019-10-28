@@ -162,6 +162,7 @@ class DataProject(osv.Model):
                 if id_student_false:
                     self.change_status_student(cr, state=False, stu_id=id_student_false)
 
+
         return super(DataProject, self).write(cr, uid, ids, vals, context=context)
 
     def change_status_student(self,cr,stu_id,state):
