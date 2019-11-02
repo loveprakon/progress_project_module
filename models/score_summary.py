@@ -25,3 +25,12 @@ class ScoreSummary(osv.Model):
         ),
 
     }
+
+    def send_email(self, cr, uid, ids, cron_mode=True, context=None):
+        """notifications about grade that has null to teacher and will set grade I
+           if หากเกินช่วงเวลาที่กำหนด"""
+        cr.execute('''
+        
+        
+        ''')
+        return True

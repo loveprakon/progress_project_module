@@ -98,6 +98,15 @@ class DataProject(osv.Model):
         return super(DataProject, self).create(cr, uid, value, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
+        if vals.get('grade',False): #update grade to model provider.in.project
+            score_obj = self.pool['provider.in.project'].browse(cr, uid, self.pool['provider.in.project']
+                                                                .search(cr, uid, [('student_id','=',ids[0])]))
+            grades = vals.get('grade').split('\n')
+            if len(score_obj) != len(grades):
+                raise osv.except_osv(('Warning!'), (u"ใส่เกรด นักศึกษา ไม่ครบ"))
+
+            for score_index in range(len(score_obj)):
+                score_obj[score_index].write({'grade':grades[score_index]})
         id_student_true = []
         id_student_false = []
         if vals.get('student_ids', False):
@@ -210,7 +219,15 @@ class ProviderInProject(osv.Model):
         'major': fields.char(
             string='ห้อง',
         ),
+        'grade': fields.char(
+            string='ห้อง',
+        ),
     }
+
+    def write(self, cr, uid, ids, vals, context=None):
+        print("yunnnnnnn")
+
+        return super(ProviderInProject, self).write(cr, uid, ids, vals, context=context)
 
     def onchange_data_student(self, cr, uid, ids, name, context=None):
         cr.execute('''
