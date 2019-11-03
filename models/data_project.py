@@ -226,8 +226,28 @@ class ProviderInProject(osv.Model):
 
     def write(self, cr, uid, ids, vals, context=None):
         print("yunnnnnnn")
-
-        return super(ProviderInProject, self).write(cr, uid, ids, vals, context=context)
+        res = super(ProviderInProject, self).write(cr, uid, ids, vals, context=context)
+        print('vals {}'.format(vals))
+        if vals.get('grade',False): #recieve grade from project.summary
+            cr.execute('''
+            with with_score_summary as (
+                            select id,student_code,grade
+                            from provider_in_project
+                            where id = %s
+                        ),
+            with_update as (
+                            update score_summary
+                            set	write_uid = %s,
+                                write_date = current_timestamp::timestamp,
+                                grade = wss.grade
+                            from with_score_summary as wss
+                            where score_summary.student_code = wss.student_code
+                            returning score_summary.id  as id_update
+                    )
+            select
+                (select max(student_code) from with_score_summary) as amount_write
+            ''',(ids[0],uid))
+        return res
 
     def onchange_data_student(self, cr, uid, ids, name, context=None):
         cr.execute('''
