@@ -12,49 +12,58 @@ class DataProject(osv.Model):
             string='ชื่อโปรเจค',
             required=True,
         ),
+
         'project_code': fields.char(
             string='รหัส',
         ),
+
         'course': fields.many2one(
             'input.subject',
             string='รหัสวิชา',
         ),
+
         'advisor': fields.many2one(
             'input.teacher',
             string='อาจารย์ที่ปรึกษา',
         ),
+
         'president': fields.many2one(
             'input.teacher',
             string='ประธาน',
         ),
+
         'commitee': fields.many2one(
             'input.teacher',
             string='กรรมการ',
         ),
+
         'co_teacher': fields.many2one(
             'input.teacher',
             string='อาจารย์ที่ปรึกษาร่วม',
         ),
+
         'approval_date': fields.date(
             string='วันที่หัวหน้าภาคอนุมัติ',
         ),
-        'deadline': fields.date(
-            string='Deadline',
-        ),
+
         'student_ids': fields.one2many(
             'provider.in.project',
             'student_id',
             string="รายชื่อนักศึกษาที่ทำโปรเจค",
         ),
+
         'total_name': fields.text(
             string='ชื่อนักศึกษาที่ทำโปรเจค',
         ),
+
         'total_student_code': fields.text(
             string='รหัสประจำตัวนักศีกษา',
         ),
+
         'total_major': fields.text(
             string='สาขา',
         ),
+
         'grade': fields.text(
             string='เกรด',
         ),
@@ -198,17 +207,6 @@ class DataProject(osv.Model):
             'datas': datas,
             'nodestroy': True
         }
-
-    def onchange_deadline(self, cr, uid, ids, date, context=None):
-        deadline = int((date.split('-'))[2])+90
-        deadline = date.split('-')[0] + '-' + date.split('-')[1] + '-' + str(deadline)
-        print('deadline ',deadline,' ',date.split('-'))
-        return {'value':
-                    {
-                     'deadline': student_item['student_code'],
-                     }
-                }
-
 
 
 class ProviderInProject(osv.Model):
