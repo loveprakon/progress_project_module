@@ -47,7 +47,9 @@
                             <field style="width: 20%%" required="1" name="president"/>
                             <field style="width: 20%%" required="1" name="commitee"/>
                             <field style="width: 20%%" name="co_teacher"/>
-                            <field style="width: 20%%" name="approval_date"/>
+                            <field style="width: 20%%" name="approval_date"
+                                   on_change="onchange_deadline(approval_date)"/>
+                            <field style="width: 20%%" name="deadline" />
                         </group>
 
                         <notebook>

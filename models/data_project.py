@@ -38,6 +38,9 @@ class DataProject(osv.Model):
         'approval_date': fields.date(
             string='วันที่หัวหน้าภาคอนุมัติ',
         ),
+        'deadline': fields.date(
+            string='Deadline',
+        ),
         'student_ids': fields.one2many(
             'provider.in.project',
             'student_id',
@@ -175,6 +178,7 @@ class DataProject(osv.Model):
         return super(DataProject, self).write(cr, uid, ids, vals, context=context)
 
     def change_status_student(self,cr,stu_id,state):
+        'change status student this fuction is called from def create def write'
         cr.execute('''
             UPDATE  input_student
             SET     in_project = %s
@@ -194,6 +198,16 @@ class DataProject(osv.Model):
             'datas': datas,
             'nodestroy': True
         }
+
+    def onchange_deadline(self, cr, uid, ids, date, context=None):
+        deadline = int((date.split('-'))[2])+90
+        deadline = date.split('-')[0] + '-' + date.split('-')[1] + '-' + str(deadline)
+        print('deadline ',deadline,' ',date.split('-'))
+        return {'value':
+                    {
+                     'deadline': student_item['student_code'],
+                     }
+                }
 
 
 
