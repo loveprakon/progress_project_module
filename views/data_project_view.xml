@@ -47,6 +47,7 @@
                             <field style="width: 20%%" required="1" name="president"/>
                             <field style="width: 20%%" required="1" name="commitee"/>
                             <field style="width: 20%%" name="co_teacher"/>
+                            <field style="width: 20%%" name="approval_date"/>
                         </group>
 
                         <notebook>

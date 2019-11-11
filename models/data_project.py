@@ -48,7 +48,7 @@ class DataProject(osv.Model):
 
         'student_ids': fields.one2many(
             'provider.in.project',
-            'student_id',
+            'data_project_id',
             string="รายชื่อนักศึกษาที่ทำโปรเจค",
         ),
 
@@ -112,7 +112,7 @@ class DataProject(osv.Model):
     def write(self, cr, uid, ids, vals, context=None):
         if vals.get('grade',False): #update grade to model provider.in.project
             score_obj = self.pool['provider.in.project'].browse(cr, uid, self.pool['provider.in.project']
-                                                                .search(cr, uid, [('student_id','=',ids[0])]))
+                                                                .search(cr, uid, [('data_project_id','=',ids[0])]))
             grades = vals.get('grade').split('\n')
             if len(score_obj) != len(grades):
                 raise osv.except_osv(('Warning!'), (u"ใส่เกรด นักศึกษา ไม่ครบ"))
@@ -217,9 +217,8 @@ class ProviderInProject(osv.Model):
         'sequence': fields.integer(
             string='Sequence',
         ),
-        'student_id': fields.many2one(
+        'data_project_id': fields.many2one(
             'data.project',
-            string='student_id',
         ),
         'name': fields.many2one(
             'input.student',
