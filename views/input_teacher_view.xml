@@ -31,8 +31,10 @@
                                 <field name="monogram" style="width: 60%%"
                                        required="1" placeholder="ชื่อย่อ"/>
                             </h3>
-                            <field style="width: 40%%" name="department"
-                                   required="1" placeholder="แผนก"/>
+                            <group>
+                                <field name="department"/>
+                                <field name="email"/>
+                            </group>
                         </div>
                     </sheet>
                 </form>
