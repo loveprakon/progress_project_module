@@ -37,9 +37,9 @@ class InputStudent(osv.Model):
         res = super(InputStudent, self).create(cr, uid, value, context=context)
         cr.execute('''
                     INSERT INTO score_summary
-                    (name,major) 
-                    values      (%s,%s)
-                ''', (value.get('name'),value.get('major')))
+                    (name,major,student_code,create_date,create_uid) 
+                    values      (%s,%s,%s,current_timestamp::timestamp,%s)
+                ''', (value.get('name'),value.get('major'),value.get('student_code'),uid))
 
         return res
 

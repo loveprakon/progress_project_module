@@ -17,6 +17,7 @@
              'report/call_report.xml',
              'views/project_summary_view.xml',
              'views/score_summary_view.xml',
+             'views/auto_job.xml',
              ],
     'update_xml': [],
     'installable': True,

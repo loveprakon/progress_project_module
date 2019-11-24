@@ -19,6 +19,10 @@ class InputTeacher(osv.Model):
             string = 'แผนก',
             required=True,
         ),
+        'email': fields.char(
+            string='อีเมลล์',
+        ),
+
     }
 
     def create(self, cr, uid, value, context=None):
