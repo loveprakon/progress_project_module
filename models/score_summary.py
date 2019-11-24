@@ -92,6 +92,7 @@ class ScoreSummary(osv.Model):
                 })
 
             student = ''
+            mail = []
             for query_result in query_results:
                 student += '<tr><td>%s</td><td>%s' \
                           '</td><td>%s</td><td>%s</td>'%(query_result.get('student_code'),
@@ -99,6 +100,16 @@ class ScoreSummary(osv.Model):
                                                                 query_result.get('project_name'),
                                                                 query_result.get('advisor')
                                                                 )
+            cr.execute('''select email
+                         from input_teacher
+                          where email is not null
+
+            ''')
+            query_results = cr.dictfetchall()
+            for query_result in query_results:
+                mail.append(query_result.get('email'))
+
+
             _logger.info(u'stu {}'.format(student, ))
             # body = u'<table><tbody>{}</tbody></table>'.format(student)
             body = u"""
@@ -134,9 +145,8 @@ class ScoreSummary(osv.Model):
                 </html>
                 """%(student,)
 
-
             values.update({'body_html':body})
-            _logger.info('vlas {}'.format(values))
+            values.update({'email_recipients': mail})
             mail_mail_obj = self.pool.get('mail.mail')
             msg_id = mail_mail_obj.create(cr, uid, values, context=context)
             if msg_id:
