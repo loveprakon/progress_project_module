@@ -10,6 +10,13 @@
                 string="รายชื่อปริญญานิพนธ์"
                 rml="progress_project_module/report/data_project_report.rml"
                 header="False"/>
+        <report
+                id="summary_project_report"
+                model="project.summary"
+                name="summary_project_report"
+                string="สรุปโปรเจค"
+                rml="progress_project_module/report/summary_project_report.rml"
+                header="False"/>
     </data>
 
 
