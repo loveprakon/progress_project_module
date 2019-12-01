@@ -22,7 +22,6 @@
             <field name="arch" type="xml">
 
                 <form string="Score Summary" version="7.0" create='false' edit="false">
-                    <button type="object" name="send_email_action" String="Send Email"/>
                     <sheet string="Score Summary">
                         <group>
                             <field  name="name"/>
