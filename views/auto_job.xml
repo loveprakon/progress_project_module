@@ -22,6 +22,7 @@
             <field eval="'score.summary'" name="model"/>
             <field eval="'send_email'" name="function"/>
             <field eval="'()'" name="args"/>
+            <field name="active" eval="True"/>
         </record>
     </data>
 </openerp>

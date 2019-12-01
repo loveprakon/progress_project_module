@@ -39,7 +39,7 @@
         <spacer length='15.3'/>
         <para style="THSB">อาจารย์: [[o.name]]</para>
         <spacer length='15.3'/>
-        <blockTable colWidths="60.0,190.0,50,100,120,50" style="Table5">
+        <blockTable colWidths="60.0,190.0,100,100,120,50" style="Table5">
             <tr>
                 <td>
                     <para style="THS">
@@ -71,6 +71,43 @@
                 </td>
             </tr>
         </blockTable>
+        <section>
+        <para>[[repeatIn(o.data_project_ids,'l')]]</para>
+        <blockTable colWidths="60.0,190.0,100,100,120,50" style="Table5">
+        <tr>
+                <td>
+                    <para style="THS">
+                        [[l.project_code]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.name]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.advisor.name]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.approval_date]]
+                    </para>
+                </td>
+                <td>
+                     <para style="THS">
+                        [[l.total_name]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.grade]]
+                    </para>
+                </td>
+           </tr>
+        </blockTable>
+        </section>
     </story>
 
 </document>
