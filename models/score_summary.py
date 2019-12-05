@@ -38,39 +38,42 @@ class ScoreSummary(osv.Model):
                         (now())::date as now_time
                         from ir_cron 
                         where function = 'give_grade_i'
+                        and active = True
                      ''')
-        time_items= cr.dictfetchall()[0]
-        dead_date_line = time_items.get('dead_date_line').split('-')
-        now_time = time_items.get('now_time').split('-')
-        t1 = datetime(year = int(dead_date_line[0]), month = int(dead_date_line[1]), day = int(dead_date_line[2]))
-        t2 = datetime(year=int(now_time[0]), month=int(now_time[1]), day=int(now_time[2]))
-        deadline = t1 - t2
-        _logger.info('day {}'.format(deadline.days))
-        for day in args: #day before deadline
-            if int(day) == deadline.days:
-                _logger.info('{} days to deadline')
-                cr.execute('''
-                    select ss.student_code,
-                            ss.name,
-                            coalesce(da_p.name,'-') as project_name,
-                            coalesce(advisor.name,'-') as advisor
-                    from ( select student_code,name
-                            from score_summary
-                            where grade = 'I'
-                        ) ss
-                    left join (select student_code as student_code_in_project,
-                                data_project_id
-                                from provider_in_project) pip on ss.student_code = pip.student_code_in_project
-                    left join (select advisor,name,id
-                                from data_project
-                                )da_p on pip.data_project_id = da_p.id
-                    left join (select id,name
-                                from input_teacher
-                                ) advisor  on advisor.id =  da_p.advisor
-                    ''')
-                query_results = cr.dictfetchall()
-                if query_results:  #if query_results have data
-                    self.send_email_action(cr,uid,query_results=query_results,deadline= time_items)
+        time_items = cr.dictfetchall()
+        if len(time_items) > 0:
+            time_items = time_items[0]
+            dead_date_line = time_items.get('dead_date_line').split('-')
+            now_time = time_items.get('now_time').split('-')
+            t1 = datetime(year = int(dead_date_line[0]), month = int(dead_date_line[1]), day = int(dead_date_line[2]))
+            t2 = datetime(year=int(now_time[0]), month=int(now_time[1]), day=int(now_time[2]))
+            deadline = t1 - t2
+            _logger.info('day {}'.format(deadline.days))
+            for day in args: #day before deadline
+                if int(day) == deadline.days:
+                    _logger.info('{} days to deadline')
+                    cr.execute('''
+                        select ss.student_code,
+                                ss.name,
+                                coalesce(da_p.name,'-') as project_name,
+                                coalesce(advisor.name,'-') as advisor
+                        from ( select student_code,name
+                                from score_summary
+                                where grade = 'I'
+                            ) ss
+                        left join (select student_code as student_code_in_project,
+                                    data_project_id
+                                    from provider_in_project) pip on ss.student_code = pip.student_code_in_project
+                        left join (select advisor,name,id
+                                    from data_project
+                                    )da_p on pip.data_project_id = da_p.id
+                        left join (select id,name
+                                    from input_teacher
+                                    ) advisor  on advisor.id =  da_p.advisor
+                        ''')
+                    query_results = cr.dictfetchall()
+                    if query_results:  #if query_results have data
+                        self.send_email_action(cr,uid,query_results=query_results,deadline= dead_date_line)
 
         return True
 
@@ -86,7 +89,8 @@ class ScoreSummary(osv.Model):
                 rec = self.pool.get('input.subject')
                 rec = rec.browse(cr,uid,self.pool['input.subject']
                                  .search(cr,uid, []))
-                subject = subject_str +' '+rec[0].name
+                deadline = deadline[2] + ' ' + deadline[1] + ' ' + deadline[0]
+                subject = subject_str +' '+rec[0].name + '\n' + u'ตัดเกรดวันที่ ' + u'%s'%(deadline)
                 values.update({
                     'subject':subject
                 })
