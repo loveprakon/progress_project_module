@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_progress_exams_wizard" model="ir.ui.view">
+            <field name="name">progress.exams.wizard.form</field>
+            <field name="model">progress.exams.wizard</field>
+            <field name="arch" type="xml">
+            <form string="Progress Exams" version="7.0">
+                <group>
+                    <field name="head" string="หัวกระดาษ"/>
+                </group>
+                <footer>
+                    <button name="print_report" string="Print" type="object" class="oe_highlight"/> or
+                    <button string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+            </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
