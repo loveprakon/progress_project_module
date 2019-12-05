@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+
+        <record id="view_progress_exams_tree" model="ir.ui.view">
+            <field name="name">progress.exams.tree</field>
+            <field name="model">score.summary</field>
+            <field name="arch" type="xml">
+                <tree string="Progress Exams" create='false'>
+                    <field name="name"/>
+                    <field name="student_code"/>
+                    <field name="major"/>
+                    <field name="point"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_progress_exams_form" model="ir.ui.view">
+            <field name="name">progress.exams.form</field>
+            <field name="model">score.summary</field>
+            <field name="arch" type="xml">
+
+                <form string="Progress Exams" version="7.0" create='false'>
+                    <sheet string="Progress Exams">
+                        <group>
+                            <field name="name"/>
+                            <field name="student_code"/>
+                            <field name="major"/>
+                            <field name="point"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_progress_exams_search" model="ir.ui.view">
+            <field name="name">progress.exams.search</field>
+            <field name="model">score.summary</field>
+            <field name="arch" type="xml">
+                <search string="Work Center load">
+                    <field name="name"/>
+                    <field name="student_code"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_progress_exams" model="ir.actions.act_window">
+            <field name="name">สอบก้าวหน้า</field>
+            <field name="res_model">score.summary</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" eval="False"/>
+            <field name="context">{'form_view_ref' : 'progress_project_module.view_progress_exams_form',
+                'tree_view_ref' : 'progress_project_module.view_progress_exams_tree'}
+            </field>
+        </record>
+
+        <menuitem action="action_progress_exams" id="menu_action_progress_exams"
+                  parent="progrss_project_project" sequence="6"/>
+
+    </data>
+</openerp>
