@@ -29,13 +29,13 @@
                             <page string="รายชื่อโปรเจค">
                                 <group colspan="4">
                                     <field name="data_project_ids" nolabel="1" widget="one2many_list">
-                                        <tree string="Menu List" editable="bottom" version="7.0">
-                                            <field name="project_code"/>
-                                            <field name="name"/>
-                                            <field name="advisor"/>
-                                            <field name="approval_date"/>
-                                            <field name="total_name"/>
-                                            <field name="total_major"/>
+                                        <tree string="Menu List" version="7.0">
+                                            <field name="project_code" readonly="1"/>
+                                            <field name="name" readonly="1"/>
+                                            <field name="advisor" readonly="1"/>
+                                            <field name="approval_date" readonly="1"/>
+                                            <field name="total_name" readonly="1"/>
+                                            <field name="total_major" readonly="1"/>
                                             <field name="grade"/>
                                         </tree>
                                     </field>

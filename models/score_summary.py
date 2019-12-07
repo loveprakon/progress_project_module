@@ -10,14 +10,26 @@ class ScoreSummary(osv.Model):
     _name = 'score.summary'
 
     _columns = {
-        'name': fields.char(
+        'name': fields.many2one(
+            'input.student',
             string='ชื่อนักศึกษา',
+            ondelete='cascade',
         ),
-        'student_code': fields.char(
+        'student_code': fields.related(
+            'name',
+            'student_code',
+            type = 'char',
+            relation='input.student',
             string='รหัสนักศึกษา',
+            store = True
         ),
-        'major': fields.char(
+        'major': fields.related(
+            'name',
+            'major',
+            type = 'char',
+            relation='input.student',
             string='สาขา',
+            store = True
         ),
         'point': fields.char(
             string='คะแนน',
