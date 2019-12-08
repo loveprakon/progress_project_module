@@ -35,10 +35,21 @@
     </stylesheet>
     <story>
         <para style="Standard">[[repeatIn(objects,'o')]]</para>
-        <para style="THSB">สอบก้วหน้า</para>
+        <para style="THSB"> [[(data['form']['head'])]] </para>
         <spacer length='15.3'/>
         <para style="Standard">[[ repeatIn(data['form']['head'],'l') ]]</para>
-        <para style="THSB"> [[(data['form']['head'])]] </para>
+        <section>
+       <para>[[repeatIn(proj_obj(data['form']['project_ids']),'l')]]</para>
+        <blockTable colWidths="60.0" style="Table5">
+        <tr>
+                <td>
+                    <para style="THS">
+                        [[l.name]]
+                    </para>
+                </td>
+           </tr>
+        </blockTable>
+        </section>
     </story>
 
 </document>
