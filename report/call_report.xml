@@ -17,6 +17,13 @@
                 string="สรุปโปรเจค"
                 rml="progress_project_module/report/summary_project_report.rml"
                 header="False"/>
+        <report
+                id="progress_exams_report"
+                model="progress.exams.wizard"
+                string="สอบก้าวหน้า"
+                name="progress_exams_report"
+                rml="progress_project_module/report/progress_exams_report.rml"
+                header="False"/>
     </data>
 
 

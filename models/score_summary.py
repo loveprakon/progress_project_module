@@ -10,14 +10,26 @@ class ScoreSummary(osv.Model):
     _name = 'score.summary'
 
     _columns = {
-        'name': fields.char(
+        'name': fields.many2one(
+            'input.student',
             string='ชื่อนักศึกษา',
+            ondelete='cascade',
         ),
-        'student_code': fields.char(
+        'student_code': fields.related(
+            'name',
+            'student_code',
+            type = 'char',
+            relation='input.student',
             string='รหัสนักศึกษา',
+            store = True
         ),
-        'major': fields.char(
+        'major': fields.related(
+            'name',
+            'major',
+            type = 'char',
+            relation='input.student',
             string='สาขา',
+            store = True
         ),
         'point': fields.char(
             string='คะแนน',
@@ -48,10 +60,8 @@ class ScoreSummary(osv.Model):
             t1 = datetime(year = int(dead_date_line[0]), month = int(dead_date_line[1]), day = int(dead_date_line[2]))
             t2 = datetime(year=int(now_time[0]), month=int(now_time[1]), day=int(now_time[2]))
             deadline = t1 - t2
-            _logger.info('day {}'.format(deadline.days))
             for day in args: #day before deadline
                 if int(day) == deadline.days:
-                    _logger.info('{} days to deadline')
                     cr.execute('''
                         select ss.student_code,
                                 ss.name,
@@ -112,9 +122,6 @@ class ScoreSummary(osv.Model):
             query_results = cr.dictfetchall()
             for query_result in query_results:
                 mail.append(query_result.get('email'))
-
-
-            _logger.info(u'stu {}'.format(student, ))
             # body = u'<table><tbody>{}</tbody></table>'.format(student)
             body = u"""
                 <!DOCTYPE html>
@@ -159,7 +166,6 @@ class ScoreSummary(osv.Model):
 
     def give_grade_i(self, cr, uid, ids=None, context=None):
         """ give grade i for student that doesn't grade"""
-        _logger.info("Scheduler Testing Grade" + str(datetime.today()))
         cr.execute('''
                 update score_summary
                 set	write_uid = %s,
@@ -168,3 +174,11 @@ class ScoreSummary(osv.Model):
                 Where grade is null
                 ''',(uid, ))
         return True
+
+    def open_wizard(self,cr, uid, *args, **kw):
+
+        return {'type': 'ir.actions.act_window',
+                'res_model': 'progress.exams.wizard',
+                'view_mode': 'form',
+                'res_id': 0,
+                'target': 'new'}

@@ -35,42 +35,10 @@ class InputStudent(osv.Model):
             'name':value['first_name'] +' '+ value['last_name']
         })
         res = super(InputStudent, self).create(cr, uid, value, context=context)
-        cr.execute('''
-                    INSERT INTO score_summary
-                    (name,major,student_code,create_date,create_uid) 
-                    values      (%s,%s,%s,current_timestamp::timestamp,%s)
-                ''', (value.get('name'),value.get('major'),value.get('student_code'),uid))
-
-        return res
-
-
-    def write(self, cr, uid, ids, vals, context=None):
-        if vals.get('first_name',False) or vals.get('last_name',False):
-            inputstudent_obj = self.browse(cr, uid, ids, context=context)
-            vals.update({'name':vals.get('first_name',inputstudent_obj[0].first_name)+' '
-                                +vals.get('last_name',inputstudent_obj[0].last_name),
-            })
-        res = super(InputStudent, self).write(cr, uid, ids, vals, context=context)
-        cr.execute('''
-                    with with_score_summary as (
-                            select id,name,major,student_code
-                            from input_student
-                            where id in %s
-                        ),
-                    with_update as (
-                            update score_summary
-                            set	write_uid = %s,
-                            write_date = current_timestamp::timestamp,
-                            major = wss.major,
-                            name = wss.name,
-                            student_code = wss.student_code
-                    from with_score_summary as wss
-                    where score_summary.id = wss.id
-                    returning score_summary.id  as id_update
-                    )
-                    select 
-                    (select max(name) from with_score_summary) as amount_create
-            ''',(tuple(ids),uid))
+        vals = ({
+            'name':res
+        })
+        self.pool.get('score.summary').create(cr, uid, vals, context=context)
         return res
 
 
