@@ -9,6 +9,7 @@
             <form string="Progress Exams" version="7.0">
                 <group>
                     <field name="head" string="หัวกระดาษ"/>
+                    <field name="project_ids" widget="many2many_tags" style="width: 30%%" options='{"no_open":True}'/>
                 </group>
                 <footer>
                     <button name="print_report" string="Print" type="object" class="oe_highlight"/> or

@@ -31,7 +31,7 @@ class ScoreSummary(osv.Model):
             string='สาขา',
             store = True
         ),
-        'point': fields.char(
+        'point': fields.integer(
             string='คะแนน',
         ),
         'grade': fields.char(

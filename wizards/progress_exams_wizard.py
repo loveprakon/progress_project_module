@@ -8,7 +8,15 @@ _logger = logging.getLogger(__name__)
 class ProgressExamsWizard(osv.TransientModel):
     _name = 'progress.exams.wizard'
     _columns = {
-        'head':  fields.text('Head', required=True),
+        'head':  fields.text(
+            string = 'Head',
+            required=True,
+        ),
+        'project_ids':fields.many2many(
+            'data.project',
+            'data_project_rel',
+            string = 'โปรเจค',
+        )
     }
     _defaults = {
         'head': 'สอบก้าวหน้า',
