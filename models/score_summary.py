@@ -40,6 +40,10 @@ class ScoreSummary(osv.Model):
 
     }
 
+    _defaults = {
+        'point':0
+    }
+
     def send_email(self, cr, uid,ids,*args):
         _logger.info('cron job send_email ids {}'.format(ids))
         """notifications about grade that has null to teacher and will set grade"""
@@ -174,11 +178,3 @@ class ScoreSummary(osv.Model):
                 Where grade is null
                 ''',(uid, ))
         return True
-
-    def open_wizard(self,cr, uid, *args, **kw):
-
-        return {'type': 'ir.actions.act_window',
-                'res_model': 'progress.exams.wizard',
-                'view_mode': 'form',
-                'res_id': 0,
-                'target': 'new'}

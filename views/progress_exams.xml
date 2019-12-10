@@ -4,20 +4,17 @@
 
         <record id="view_progress_exams_tree" model="ir.ui.view">
             <field name="name">progress.exams.tree</field>
-            <field name="model">score.summary</field>
+            <field name="model">progress.exams</field>
             <field name="arch" type="xml">
                 <tree string="Progress Exams" create='false'>
                     <field name="name"/>
-                    <field name="student_code"/>
-                    <field name="major"/>
-                    <field name="point"/>
                 </tree>
             </field>
         </record>
 
         <record id="view_progress_exams_form" model="ir.ui.view">
             <field name="name">progress.exams.form</field>
-            <field name="model">score.summary</field>
+            <field name="model">progress.exams</field>
             <field name="arch" type="xml">
 
                 <form string="Progress Exams" version="7.0" create='false'>
@@ -28,10 +25,26 @@
                     <sheet string="Progress Exams">
                         <group>
                             <field name="name"/>
-                            <field name="student_code"/>
-                            <field name="major"/>
-                            <field name="point"/>
                         </group>
+                        <notebook>
+                            <page string="รายชื่อโปรเจค">
+                                <group colspan="4">
+                                    <field name="project_ids" nolabel="1" widget="one2many_list">
+                                        <tree string="Menu List" editable="bottom"  version="7.0">
+                                            <field name="project_code" readonly="1"/>
+                                            <field name="name" readonly="1"/>
+                                            <field name="approval_date" readonly="1"/>
+                                            <field name="total_name" readonly="1"/>
+                                            <field name="total_major" readonly="1"/>
+                                            <field name="room"/>
+                                            <field name="date_exam"/>
+                                            <field name="time_exam"/>
+                                            <field name="point"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -39,11 +52,9 @@
 
         <record id="view_progress_exams_search" model="ir.ui.view">
             <field name="name">progress.exams.search</field>
-            <field name="model">score.summary</field>
+            <field name="model">progress.exams</field>
             <field name="arch" type="xml">
                 <search string="Work Center load">
-                    <field name="name"/>
-                    <field name="student_code"/>
                 </search>
             </field>
         </record>
@@ -51,7 +62,7 @@
 
         <record id="action_progress_exams" model="ir.actions.act_window">
             <field name="name">สอบก้าวหน้า</field>
-            <field name="res_model">score.summary</field>
+            <field name="res_model">progress.exams</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" eval="False"/>
