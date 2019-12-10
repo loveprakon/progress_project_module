@@ -37,7 +37,7 @@
         <para style="Standard">[[repeatIn(objects,'o')]]</para>
         <para style="THSB">สรุปรายชื่อโปรเจค</para>
         <spacer length='15.3'/>
-        <para style="THSB">อาจารย์: [[o.name]]</para>
+        <para style="THSB">อาจารย์: [[o.name.name]]</para>
         <spacer length='15.3'/>
         <blockTable colWidths="60.0,190.0,100,100,120,50" style="Table5">
             <tr>

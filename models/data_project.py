@@ -107,7 +107,13 @@ class DataProject(osv.Model):
             'total_student_code': total_student_code,
             'total_major': total_major,
         })
-        return super(DataProject, self).create(cr, uid, value, context=context)
+
+        res = super(DataProject, self).create(cr, uid, value, context=context)
+        vals = ({
+            'name':res
+        })
+        self.pool.get('progress.exams.line').create(cr, uid, vals, context=context)
+        return res
 
     def write(self, cr, uid, ids, vals, context=None):
         if vals.get('grade',False): #update grade to model provider.in.project
