@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from openerp.osv import osv, fields
-
+import logging
+_logger = logging.getLogger(__name__)
 
 class InputTeacher(osv.Model):
     'model for put Teacher name'
@@ -27,13 +28,11 @@ class InputTeacher(osv.Model):
 
     def create(self, cr, uid, value, context=None):
         res = super(InputTeacher, self).create(cr, uid, value, context=context)
-        cr.execute('''
-                    INSERT INTO project_summary
-                    (name,monogram) 
-                    values      (%s,%s)
-                    
-                ''',(value.get('name'),value.get('monogram')))
-
+        vals = ({
+            'name':res
+        })
+        self.pool.get('project.summary').create(cr, uid, vals, context=context)
+        self.pool.get('progress.exams').create(cr, uid, vals, context=context)
         return res
 
 

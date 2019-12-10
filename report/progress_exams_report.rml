@@ -38,13 +38,84 @@
         <para style="THSB"> [[(data['form']['head'])]] </para>
         <spacer length='15.3'/>
         <para style="Standard">[[ repeatIn(data['form']['head'],'l') ]]</para>
+        <spacer length='20'/>
+         <blockTable colWidths="60.0,190.0,100,100,120,70,70,50" style="Table5">
+            <tr>
+                <td>
+                    <para style="THS">
+                        รหัสโปรเจค
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        ชื่อโปรเจค
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        อาจารย์
+                        ที่ปรึกษา
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">รายชื่อนศ.</para>
+                </td>
+                <td>
+                    <para style="THS">ห้อง</para>
+                </td>
+                <td>
+                    <para style="THS">วัน</para>
+                </td>
+                <td>
+                    <para style="THS">เวลา</para>
+                </td>
+                                <td>
+                    <para style="THS">คะแนน</para>
+                </td>
+            </tr>
+        </blockTable>
         <section>
        <para>[[repeatIn(proj_obj(data['form']['project_ids']),'l')]]</para>
-        <blockTable colWidths="60.0" style="Table5">
+       <blockTable colWidths="60.0,190.0,100,100,120,70,70,50" style="Table5">
         <tr>
                 <td>
                     <para style="THS">
-                        [[l.name]]
+                        [[l.project_code]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.name.name]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.advisor.name]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.total_name]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.room]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                       [[(format_date(l.date_exam))]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.time_exam]]
+                    </para>
+                </td>
+                <td>
+                    <para style="THS">
+                        [[l.point]]
                     </para>
                 </td>
            </tr>
