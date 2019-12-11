@@ -113,6 +113,7 @@ class DataProject(osv.Model):
             'name':res
         })
         self.pool.get('progress.exams.line').create(cr, uid, vals, context=context)
+        self.pool.get('protect.exams.line').create(cr, uid, vals, context=context)
         return res
 
     def write(self, cr, uid, ids, vals, context=None):

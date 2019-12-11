@@ -33,6 +33,7 @@ class InputTeacher(osv.Model):
         })
         self.pool.get('project.summary').create(cr, uid, vals, context=context)
         self.pool.get('progress.exams').create(cr, uid, vals, context=context)
+        self.pool.get('protect.exams').create(cr, uid, vals, context=context)
         return res
 
 
