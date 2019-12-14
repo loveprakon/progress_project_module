@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_protect_exams_wizard" model="ir.ui.view">
+            <field name="name">protect.exams.wizard.form</field>
+            <field name="model">protect.exams.wizard</field>
+            <field name="arch" type="xml">
+            <form string="Protect Exams" version="7.0">
+                <group>
+                    <field name="head" string="หัวกระดาษ"/>
+                    <field name="project_ids" widget="many2many_tags" style="width: 30%%" options='{"no_open":True}'/>
+                </group>
+                <footer>
+                    <button name="print_report" string="Print" type="object" class="oe_highlight"/> or
+                    <button string="Cancel" special="cancel" class="oe_link"/>
+                </footer>
+            </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -5,8 +5,8 @@ from openerp.tools.translate import _
 import logging
 _logger = logging.getLogger(__name__)
 
-class ProgressExamsWizard(osv.TransientModel):
-    _name = 'progress.exams.wizard'
+class ProtectExamsWizard(osv.TransientModel):
+    _name = 'protect.exams.wizard'
     _columns = {
         'head':  fields.text(
             string = 'Head',
@@ -14,14 +14,13 @@ class ProgressExamsWizard(osv.TransientModel):
         ),
         'project_ids':fields.many2many(
             'data.project',
-            'data_project_rel',
+            'data_project_protect_rel',
             string = 'โปรเจค',
             required=True,
         )
-
     }
     _defaults = {
-        'head': 'สอบก้าวหน้า',
+        'head': 'สอบป้องกัน',
     }
 
 
@@ -31,14 +30,14 @@ class ProgressExamsWizard(osv.TransientModel):
         data = self.read(cr, uid, ids)[0]
         datas = {
             'ids': context.get('active_ids', []),
-            'model': 'progress.exams.wizard',
+            'model': 'protect.exams.wizard',
             'form': data
         }
         _logger.info('data {}'.format(datas))
         return {
             'type': 'ir.actions.report.xml',
-            'report_name': 'progress_exams_report',
+            'report_name': 'protect_exams_report',
             'datas': datas,
         }
 
-ProgressExamsWizard()
+ProtectExamsWizard()

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp.osv import osv, fields
+from openerp.modules.registry import RegistryManager
 import datetime
 
 
@@ -214,7 +215,6 @@ class DataProject(osv.Model):
             'datas': datas,
             'nodestroy': True
         }
-
 
 class ProviderInProject(osv.Model):
     'model for input student to project'

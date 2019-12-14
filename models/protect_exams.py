@@ -31,6 +31,28 @@ class ProtectExams(osv.Model):
                 'res_id': 0,
                 'target': 'new'}
 
+    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+        """ Check advisor false and update"""
+        cr.execute("""
+                     with tb_advisor_false as (
+                             select pr_line.name,
+                                     pr_line.advisor as advisor_line,
+                                     dp.id,
+                                     dp.advisor as advisor_dp
+                             from progress_exams_line pr_line
+                             inner join (select id,advisor
+                                         from data_project
+                                         ) dp on pr_line.name =  dp.id
+                     )
+                     update progress_exams_line
+                     set advisor = tb_advisor_false.advisor_dp
+                     from tb_advisor_false 
+                     where progress_exams_line.name = tb_advisor_false.name
+                     and tb_advisor_false.advisor_line != tb_advisor_false.advisor_dp
+         """)
+        res = super(ProtectExams, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar, submenu=submenu)
+        return res
+
 class ProtectExamsLine(osv.Model):
     _name = 'protect.exams.line'
 
@@ -110,23 +132,26 @@ class ProtectExamsLine(osv.Model):
         if vals.get('point', False):
             _logger.info('va {}'.format(type(ids[0])))
             cr.execute(''' 
-                        with tb_point as (    
-                                        select pline.point as point,
-                                                dp.id as p_id,
-                                                pp.name as student_id
-                                        from protect_exams_line pline 
-                                        inner join (select id
-                                                    from data_project
-                                                    ) dp on pline.name = dp.id
-                                        inner join (select name,
-                                                            data_project_id
-                                                    from provider_in_project
-                                                    ) pp on pp.data_project_id = dp.id
-                                        where pline.id = %s
+                        with tb_score as (
+                                    select  coalesce(pline.point,0) + coalesce(protect.point,0) as point_sum,	
+                                            pp.name as student_id
+                                    from progress_exams_line pline 
+                                    inner join (select  COALESCE(point,0) as point,
+                                                        project_code
+                                                from protect_exams_line
+                                                ) protect on  pline.project_code = protect.project_code
+                                    inner join (select id
+                                                from data_project
+                                                ) dp on pline.name = dp.id
+                                    inner join (select name,
+                                                        data_project_id
+                                                from provider_in_project
+                                                ) pp on pp.data_project_id = dp.id
                         )
-                        update score_summary ss
-                        set point = tb_point.point
-                        from tb_point 
-                        where  ss.id = tb_point.student_id            
-                    ''',(ids[0],))
+                        update score_summary
+                        set point = point_sum
+                        from tb_score 
+                        where score_summary.name = tb_score.student_id
+                        and point_sum != 0           
+                    ''')
         return res
