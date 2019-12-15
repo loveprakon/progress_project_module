@@ -4,8 +4,8 @@ import logging
 from datetime import datetime,date
 _logger = logging.getLogger(__name__)
 
-class ProgressExam(osv.Model):
-    _name = 'progress.exams'
+class ProtectExams(osv.Model):
+    _name = 'protect.exams'
 
     _columns = {
         'name': fields.many2one(
@@ -16,7 +16,7 @@ class ProgressExam(osv.Model):
         ),
 
         'project_ids': fields.one2many(
-            'progress.exams.line',
+            'protect.exams.line',
             'advisor',
             string="รายชื่อนักศึกษาที่ทำโปรเจค",
             required=True,
@@ -50,11 +50,11 @@ class ProgressExam(osv.Model):
                      where progress_exams_line.name = tb_advisor_false.name
                      and tb_advisor_false.advisor_line != tb_advisor_false.advisor_dp
          """)
-        res = super(ProgressExam, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar, submenu=submenu)
+        res = super(ProtectExams, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar, submenu=submenu)
         return res
 
-class ProgressExamLine(osv.Model):
-    _name = 'progress.exams.line'
+class ProtectExamsLine(osv.Model):
+    _name = 'protect.exams.line'
 
     _columns = {
         'name': fields.many2one(
@@ -128,7 +128,7 @@ class ProgressExamLine(osv.Model):
     }
 
     def write(self, cr, uid, ids, vals, context=None):
-        res = super(ProgressExamLine, self).write(cr, uid, ids, vals, context=context)
+        res = super(ProtectExamsLine, self).write(cr, uid, ids, vals, context=context)
         if vals.get('point', False):
             _logger.info('va {}'.format(type(ids[0])))
             cr.execute(''' 
