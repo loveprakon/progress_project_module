@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp.osv import osv, fields
+from openerp.modules.registry import RegistryManager
 import datetime
 
 
@@ -113,6 +114,7 @@ class DataProject(osv.Model):
             'name':res
         })
         self.pool.get('progress.exams.line').create(cr, uid, vals, context=context)
+        self.pool.get('protect.exams.line').create(cr, uid, vals, context=context)
         return res
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -213,7 +215,6 @@ class DataProject(osv.Model):
             'datas': datas,
             'nodestroy': True
         }
-
 
 class ProviderInProject(osv.Model):
     'model for input student to project'

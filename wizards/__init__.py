@@ -1,1 +1,2 @@
 import progress_exams_wizard
+import protect_exams_wizard

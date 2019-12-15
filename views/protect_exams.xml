@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+
+        <record id="view_protect_exams_tree" model="ir.ui.view">
+            <field name="name">protect.exams.tree</field>
+            <field name="model">protect.exams</field>
+            <field name="arch" type="xml">
+                <tree string="Progtect Exams" create='false'>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_protect_exams_form" model="ir.ui.view">
+            <field name="name">protect.exams.form</field>
+            <field name="model">protect.exams</field>
+            <field name="arch" type="xml">
+
+                <form string="Protect Exams" version="7.0" create='false'>
+                    <header>
+                        <button string="report" name="open_wizard" type="object"
+                                class="oe_highlight"/>
+                    </header>
+                    <sheet string="Progress Exams">
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <notebook>
+                            <page string="รายชื่อโปรเจค">
+                                <group colspan="4">
+                                    <field name="project_ids" nolabel="1" widget="one2many_list">
+                                        <tree string="Menu List" editable="bottom"  version="7.0">
+                                            <field name="project_code" readonly="1"/>
+                                            <field name="name" readonly="1"/>
+                                            <field name="approval_date" readonly="1"/>
+                                            <field name="total_name" readonly="1"/>
+                                            <field name="total_major" readonly="1"/>
+                                            <field name="room"/>
+                                            <field name="date_exam"/>
+                                            <field name="time_exam"/>
+                                            <field name="point"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_protect_exams_search" model="ir.ui.view">
+            <field name="name">protect.exams.search</field>
+            <field name="model">protect.exams</field>
+            <field name="arch" type="xml">
+                <search string="Work Center load">
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_protect_exams" model="ir.actions.act_window">
+            <field name="name">สอบป้องกัน</field>
+            <field name="res_model">protect.exams</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" eval="False"/>
+            <field name="context">{'form_view_ref' : 'progress_project_module.view_protect_exams_form',
+                'tree_view_ref' : 'progress_project_module.view_protect_exams_tree'}
+            </field>
+        </record>
+
+        <menuitem action="action_protect_exams" id="menu_action_protect_exams"
+                  parent="progrss_project_project" sequence="7"/>
+
+    </data>
+</openerp>

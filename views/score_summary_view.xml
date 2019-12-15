@@ -47,7 +47,7 @@
         </record>
 
         <menuitem action="action_score_summary"  id="menu_action_score_summary"
-                  parent="progrss_project_project" sequence="7"/>
+                  parent="progrss_project_project" sequence="9"/>
 
     </data>
 </openerp>
