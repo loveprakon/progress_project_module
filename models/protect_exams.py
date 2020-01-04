@@ -125,6 +125,15 @@ class ProtectExamsLine(osv.Model):
         'point': fields.integer(
             string='คะแนน',
         ),
+
+        'state': fields.related(
+            'name',
+            'state',
+            type='selection',
+            string='สถานะ',
+            readonly=True,
+            store=True,
+        ),
     }
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -154,4 +163,8 @@ class ProtectExamsLine(osv.Model):
                         where score_summary.name = tb_score.student_id
                         and point_sum != 0           
                     ''')
+        line_obj = self.browse(cr, uid, ids, context=context)
+        pj_obj = self.pool['data.project'].browse(cr, uid, self.pool['data.project']
+                                              .search(cr, uid, [('id','=',line_obj[0].name.id)]))
+        pj_obj[0].write({'state':'protect'})
         return res

@@ -39,7 +39,7 @@
                                             <field name="room"/>
                                             <field name="date_exam"/>
                                             <field name="time_exam"/>
-                                            <field name="point"/>
+                                            <field name="point" attrs="{'readonly':[('name','=',0)]}"/>
                                         </tree>
                                     </field>
                                 </group>

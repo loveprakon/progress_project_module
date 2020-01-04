@@ -69,6 +69,22 @@ class DataProject(osv.Model):
             string='เกรด',
         ),
 
+        'state': fields.selection(
+            [('draft', 'ร่าง'),
+             ('approve', 'อนุมัติ'),
+             ('progress', 'สอบก้าวหน้า'),
+             ('protect', 'สอบป้องกัน'),
+             ('done', 'Done')],
+            'Status',
+            readonly=True,
+            required=True,
+            )
+
+    }
+
+
+    _defaults = {
+        'state':'draft'
     }
 
     def create(self, cr, uid, value, context=None):
@@ -127,6 +143,8 @@ class DataProject(osv.Model):
 
             for score_index in range(len(score_obj)):
                 score_obj[score_index].write({'grade':grades[score_index]})
+
+            self.write(cr, uid, ids, {'state':'done'})
         id_student_true = []
         id_student_false = []
         if vals.get('student_ids', False):
@@ -215,6 +233,10 @@ class DataProject(osv.Model):
             'datas': datas,
             'nodestroy': True
         }
+
+    def approve(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state':'approve'})
+        return True
 
 class ProviderInProject(osv.Model):
     'model for input student to project'

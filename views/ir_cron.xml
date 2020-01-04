@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem action="base.ir_cron_act" id="menu_action_ir_cron"
+                  parent="progrss_project_configuration" sequence="10"/>
+
+
+    </data>
+</openerp>
