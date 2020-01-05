@@ -89,7 +89,7 @@ class ProgressExamLine(osv.Model):
             type='selection',
             string='สถานะ',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'approval_date':fields.related(
@@ -98,7 +98,7 @@ class ProgressExamLine(osv.Model):
             type='date',
             string='วันที่หัวหน้าภาคอนุมัติ',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'total_name': fields.related(

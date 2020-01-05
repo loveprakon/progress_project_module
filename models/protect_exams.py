@@ -80,7 +80,7 @@ class ProtectExamsLine(osv.Model):
             type='char',
             string='รหัสโปรเจค',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'approval_date':fields.related(
@@ -89,7 +89,7 @@ class ProtectExamsLine(osv.Model):
             type='date',
             string='วันที่หัวหน้าภาคอนุมัติ',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'total_name': fields.related(
@@ -98,7 +98,7 @@ class ProtectExamsLine(osv.Model):
             type='text',
             string='นักศึกษา',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'total_major': fields.related(
@@ -107,7 +107,7 @@ class ProtectExamsLine(osv.Model):
             type='text',
             string='สาขา',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'room': fields.char(
@@ -132,7 +132,7 @@ class ProtectExamsLine(osv.Model):
             type='selection',
             string='สถานะ',
             readonly=True,
-            store=True,
+            store=False,
         ),
     }
 

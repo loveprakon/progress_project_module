@@ -36,8 +36,6 @@
     <story>
         <para style="Standard">[[repeatIn(objects,'o')]]</para>
         <para style="THSB"> [[(data['form']['head'])]] </para>
-        <spacer length='15.3'/>
-        <para style="Standard">[[ repeatIn(data['form']['head'],'l') ]]</para>
         <spacer length='20'/>
          <blockTable colWidths="60.0,190.0,100,100,120,70,70,50" style="Table5">
             <tr>
