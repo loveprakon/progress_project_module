@@ -27,9 +27,14 @@
             <field name="arch" type="xml">
 
                 <form string="Progress Project" version="7.0">
-                    <button type="object" name="print_report" String="Print all data"/>
+                    <header>
+                        <button type="object" name="print_report" String="Print all data"/>
+                        <field name='state' widget='statusbar' />
+                    </header>
                     <sheet string="prog">
-
+                        <group>
+                        <button name="approve" string="อนุมัติ" type="object" states="draft" class="oe_highlight"/>
+                        </group>
                         <label string="PROJECT NO."/>
                         <field name="project_code" style="width: 50%%;padding-top:0px;" readonly="1"/>
 

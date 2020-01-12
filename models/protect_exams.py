@@ -80,7 +80,7 @@ class ProtectExamsLine(osv.Model):
             type='char',
             string='รหัสโปรเจค',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'approval_date':fields.related(
@@ -89,7 +89,7 @@ class ProtectExamsLine(osv.Model):
             type='date',
             string='วันที่หัวหน้าภาคอนุมัติ',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'total_name': fields.related(
@@ -98,7 +98,7 @@ class ProtectExamsLine(osv.Model):
             type='text',
             string='นักศึกษา',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'total_major': fields.related(
@@ -107,7 +107,7 @@ class ProtectExamsLine(osv.Model):
             type='text',
             string='สาขา',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'room': fields.char(
@@ -124,6 +124,15 @@ class ProtectExamsLine(osv.Model):
 
         'point': fields.integer(
             string='คะแนน',
+        ),
+
+        'state': fields.related(
+            'name',
+            'state',
+            type='selection',
+            string='สถานะ',
+            readonly=True,
+            store=False,
         ),
     }
 
@@ -154,4 +163,8 @@ class ProtectExamsLine(osv.Model):
                         where score_summary.name = tb_score.student_id
                         and point_sum != 0           
                     ''')
+        line_obj = self.browse(cr, uid, ids, context=context)
+        pj_obj = self.pool['data.project'].browse(cr, uid, self.pool['data.project']
+                                              .search(cr, uid, [('id','=',line_obj[0].name.id)]))
+        pj_obj[0].write({'state':'protect'})
         return res
