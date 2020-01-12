@@ -83,13 +83,22 @@ class ProgressExamLine(osv.Model):
             store=True,
         ),
 
+        'state': fields.related(
+            'name',
+            'state',
+            type='selection',
+            string='สถานะ',
+            readonly=True,
+            store=False,
+        ),
+
         'approval_date':fields.related(
             'name',
             'approval_date',
             type='date',
             string='วันที่หัวหน้าภาคอนุมัติ',
             readonly=True,
-            store=True,
+            store=False,
         ),
 
         'total_name': fields.related(
@@ -154,4 +163,9 @@ class ProgressExamLine(osv.Model):
                         where score_summary.name = tb_score.student_id
                         and point_sum != 0           
                     ''')
+
+        line_obj = self.browse(cr, uid, ids, context=context)
+        pj_obj = self.pool['data.project'].browse(cr, uid, self.pool['data.project']
+                                                            .search(cr, uid, [('id','=',line_obj[0].name.id)]))
+        pj_obj[0].write({'state':'progress'})
         return res

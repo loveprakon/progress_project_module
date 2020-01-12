@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_data_project,access_data_project,model_data_project,,1,0,0,0
+access_provider_in_project,access_provider_in_project,model_provider_in_project,,1,0,0,0
+access_progress_exams,access_progress_exams,model_progress_exams,,1,0,0,0
+access_progress_exams_line,access_progress_exams_line,model_progress_exams_line,,1,0,0,0
+access_project_summary,access_project_summary,model_project_summary,,1,0,0,0
+access_protect_exams,access_protect_exams,model_protect_exams,,1,0,0,0
+access_protect_exams_line,access_protect_exams_line,model_protect_exams_line,,1,0,0,0
+access_score_summary,access_score_summary,model_score_summary,,1,0,0,0
+access_input_student,access_input_student,model_input_student,,1,0,0,0
+access_input_subject,access_input_subject,model_input_subject,,1,0,0,0
+access_input_teacher,access_input_teacher,model_input_teacher,,1,0,0,0
+access_progress_exams_wizard,access_progress_exams_wizard,model_progress_exams_wizard,,1,0,0,0
+access_protect_exams_wizard,access_protect_exams_wizard,model_protect_exams_wizard,,1,0,0,0
