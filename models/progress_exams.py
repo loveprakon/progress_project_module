@@ -169,3 +169,69 @@ class ProgressExamLine(osv.Model):
                                                             .search(cr, uid, [('id','=',line_obj[0].name.id)]))
         pj_obj[0].write({'state':'progress'})
         return res
+
+    def alert_progress_exam(self, cr, uid, ids=None, context=None):
+        _logger.info('alert_progress_exam')
+        email_template_obj = self.pool.get('email.template')
+        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'score.summary')], context=context)
+        cr.execute(''' 
+                    select dp.name ,
+                    pxl.date_exam,
+                    pxl.time_exam,
+                    pxl.room,
+                    it.name,
+                    it.email
+            from progress_exams_line pxl 
+            inner join data_project dp  on pxl.name = dp.id
+            inner join input_teacher it on pxl.advisor = it.id 
+            where dp.state   = 'progress' 
+        ''')
+        for line in  cr.dictfetchall():
+            body = u"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                    <style>
+                        .table_log {
+                            border: 1px solid black;
+                            }
+                        .table_log tr{
+                            border: 1px solid black;
+                            }
+                        .table_log td{
+                            border: 1px solid black;
+                            }
+                        .table_log th{
+                            border: 1px solid black;
+                            }
+                    </style>
+                    </head>
+                    <body>
+                    <table class="table_log">
+                    <tr>
+                        <th>ชื่อโปรเจค</th>
+                        <th>วัน</th>
+                        <th>เวลา</th>
+                        <th>ห้อง</th>
+                        <th>อาจารย์</th>
+                    </tr>
+                    <tr>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                    </tr>
+                    </table>
+                    </body>
+                    </html>
+            
+            """%(line.get('project_name','-'),
+                 line.get('date_exam','-'),
+                 line.get('time_exam','-'),
+                 line.get('room','-'),
+                 line.get('name','-'))
+
+
+
+
