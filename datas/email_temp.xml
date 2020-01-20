@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="ir_mail_server_gmail" model="ir.mail_server">
+            <field name="name">Gmail</field>
+            <field name="smtp_host">smtp.gmail.com</field>
+            <field name="smtp_port">465</field>
+            <field name="smtp_encryption">ssl</field>
+        </record>
+
+        <record id="email_template_alert_progress" model="email.template">
+            <field name="name">Alert Progress</field>
+            <field name="model_id" ref="progress_project_module.model_progress_exams"/>
+            <field name="mail_server_id" ref="ir_mail_server_gmail"/>
+        </record>
+
+    </data>
+</openerp>

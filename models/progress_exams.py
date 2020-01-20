@@ -171,11 +171,17 @@ class ProgressExamLine(osv.Model):
         return res
 
     def alert_progress_exam(self, cr, uid, ids=None, context=None):
-        _logger.info('alert_progress_exam')
+        if context == None:
+            context = {}
+        context.update({'model':'progress.exams','name':'alert_progress'})
+        _logger.info('>>> Alert Progress Exam <<<')
+        self.create_email_template(cr, uid,context)
+        progress_exams_obj = self.pool.get('progress.exams').search(cr, uid, [], context=context)
         email_template_obj = self.pool.get('email.template')
-        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'score.summary')], context=context)
+        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'progress.exams')], context=context)
+        values = email_template_obj.generate_email(cr, uid, template_ids[0], progress_exams_obj[0], context=context)
         cr.execute(''' 
-                    select dp.name ,
+            select dp.name ,
                     pxl.date_exam,
                     pxl.time_exam,
                     pxl.room,
@@ -185,6 +191,7 @@ class ProgressExamLine(osv.Model):
             inner join data_project dp  on pxl.name = dp.id
             inner join input_teacher it on pxl.advisor = it.id 
             where dp.state   = 'progress' 
+            and  (pxl.date_exam - interval '1 days')::date = now()::date
         ''')
         for line in  cr.dictfetchall():
             body = u"""
@@ -231,6 +238,27 @@ class ProgressExamLine(osv.Model):
                  line.get('time_exam','-'),
                  line.get('room','-'),
                  line.get('name','-'))
+            values.update({'body_html':body})
+
+            mail = "[%s,]"%(line.get('email',False))
+            values.update({'email_to':mail})
+            mail_mail_obj = self.pool.get('mail.mail')
+            msg_id = mail_mail_obj.create(cr, uid, values, context=context)
+            if msg_id:
+                mail_mail_obj.send(cr, uid, [msg_id], context=context)
+        return True
+
+
+    def create_email_template(self,cr, uid,context=None):
+        email_template_obj = self.pool.get('email.template').search(cr, uid, [('model_id.model', '=', context.get('model'))], context=context)
+        if not email_template_obj :
+            ir_obj = self.pool.get('ir.model').search(cr, uid, [('model', '=', 'progress.exams')], context=context)
+            vals = {'name': context.get('name'),
+                    'model_id':ir_obj[0],
+                    }
+            self.pool.get('email.template').create(cr, uid,vals)
+
+
 
 
 

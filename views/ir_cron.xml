@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <menuitem action="base.ir_cron_act" id="menu_action_ir_cron"
+        <record id="action_ir_cron" model="ir.actions.act_window">
+            <field name="name">Shedualed Action</field>
+            <field name="res_model">ir.cron</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" eval="False"/>
+            <field name="context">{}</field>
+            <field name="help">คลิ๊ก creat เพื่อ สร้างโปรเจค</field>
+            <field name="context">{'active_test': False}</field>
+            <field name="domain">[('name','in',('Alert Progress','Give Grade',
+                'Send Email For Grade Is Space'))]</field>
+        </record>
+
+        <menuitem action="progress_project_module.action_ir_cron" id="menu_action_ir_cron"
                   parent="progrss_project_configuration" sequence="10"/>
 
 

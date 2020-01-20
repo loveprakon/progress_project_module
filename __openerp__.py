@@ -24,6 +24,7 @@
              'wizards/protect_exams_views.xml',
              'security/ir.model.access.csv',
              'views/ir_cron.xml',
+             'datas/email_temp.xml'
              ],
     'update_xml': [],
     'installable': True,
