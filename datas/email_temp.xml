@@ -12,7 +12,21 @@
             <field name="name">Alert Progress</field>
             <field name="model_id" ref="progress_project_module.model_progress_exams"/>
             <field name="mail_server_id" ref="ir_mail_server_gmail"/>
+            <field name="subject">แจ้งเตือนสอบก้าวหน้า</field>
         </record>
 
+        <record id="email_template_alert_give_grade" model="email.template">
+            <field name="name">Alert Give Grade</field>
+            <field name="model_id" ref="progress_project_module.model_score_summary"/>
+            <field name="mail_server_id" ref="ir_mail_server_gmail"/>
+            <field name="subject">แจ้งเตือนการตัดเกรด</field>
+        </record>
+
+        <record id="email_template_alert_protect" model="email.template">
+            <field name="name">Alert Protect</field>
+            <field name="model_id" ref="progress_project_module.model_protect_exams"/>
+            <field name="mail_server_id" ref="ir_mail_server_gmail"/>
+            <field name="subject">แจ้งเตือนสอบป้องกัน</field>
+        </record>
     </data>
 </openerp>
