@@ -286,6 +286,10 @@ class ProviderInProject(osv.Model):
             select
                 (select max(student_code) from with_score_summary) as amount_write
             ''',(ids[0],uid))
+            line_obj = self.browse(cr, uid, ids, context=context)
+            # pj_obj = self.pool['data.project'].browse(cr, uid, self.pool['data.project']
+            #                                       .search(cr, uid, [('id','=',line_obj[0].name.id)]))
+            # pj_obj[0].write({'state':'done'})
         return res
 
     def onchange_data_student(self, cr, uid, ids, name, context=None):

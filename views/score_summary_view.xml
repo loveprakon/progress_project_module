@@ -28,7 +28,7 @@
                             <field  name="student_code"/>
                             <field  name="major"/>
                             <field  name="point"/>
-                              <field  name="grade"/>
+                            <field  name="grade"/>
                         </group>
                     </sheet>
                 </form>
