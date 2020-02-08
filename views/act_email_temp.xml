@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="action_email_template" model="ir.actions.act_window">
+            <field name="name">Email Templates</field>
+            <field name="res_model">email.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" eval="False"/>
+            <field name="context">{}</field>
+            <field name="help">คลิ๊ก creat เพื่อ สร้างโปรเจค</field>
+            <field name="domain">[('name','in',('Alert Give Grade','Alert Progress',
+                'Alert Protect'))]</field>
+        </record>
+
+        <menuitem action="progress_project_module.action_email_template" id="menu_action_email_template"
+                  parent="progrss_project_configuration" sequence="12"/>
+
+
+    </data>
+</openerp>

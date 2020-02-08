@@ -169,3 +169,97 @@ class ProgressExamLine(osv.Model):
                                                             .search(cr, uid, [('id','=',line_obj[0].name.id)]))
         pj_obj[0].write({'state':'progress'})
         return res
+
+    def alert_progress_exam(self, cr, uid, ids=None, context=None):
+        if context == None:
+            context = {}
+        context.update({'model':'progress.exams','name':'alert_progress'})
+        _logger.info('>>> Alert Progress Exam <<<')
+        self.create_email_template(cr, uid,context)
+        progress_exams_obj = self.pool.get('progress.exams').search(cr, uid, [], context=context)
+        email_template_obj = self.pool.get('email.template')
+        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'progress.exams')], context=context)
+        values = email_template_obj.generate_email(cr, uid, template_ids[0], progress_exams_obj[0], context=context)
+        cr.execute(''' 
+            select dp.name ,
+                    pxl.date_exam,
+                    pxl.time_exam,
+                    pxl.room,
+                    it.name,
+                    it.email
+            from progress_exams_line pxl 
+            inner join data_project dp  on pxl.name = dp.id
+            inner join input_teacher it on pxl.advisor = it.id 
+            where dp.state   = 'progress' 
+            and  (pxl.date_exam - interval '1 days')::date = now()::date
+        ''')
+        for line in  cr.dictfetchall():
+            body = u"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                    <style>
+                        .table_log {
+                            border: 1px solid black;
+                            }
+                        .table_log tr{
+                            border: 1px solid black;
+                            }
+                        .table_log td{
+                            border: 1px solid black;
+                            }
+                        .table_log th{
+                            border: 1px solid black;
+                            }
+                    </style>
+                    </head>
+                    <body>
+                    <table class="table_log">
+                    <tr>
+                        <th>ชื่อโปรเจค</th>
+                        <th>วัน</th>
+                        <th>เวลา</th>
+                        <th>ห้อง</th>
+                        <th>อาจารย์</th>
+                    </tr>
+                    <tr>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                    </tr>
+                    </table>
+                    </body>
+                    </html>
+            
+            """%(line.get('project_name','-'),
+                 line.get('date_exam','-'),
+                 line.get('time_exam','-'),
+                 line.get('room','-'),
+                 line.get('name','-'))
+            values.update({'body_html':body})
+
+            mail = "[%s,]"%(line.get('email',False))
+            values.update({'email_to':mail})
+            mail_mail_obj = self.pool.get('mail.mail')
+            msg_id = mail_mail_obj.create(cr, uid, values, context=context)
+            if msg_id:
+                mail_mail_obj.send(cr, uid, [msg_id], context=context)
+        return True
+
+
+    def create_email_template(self,cr, uid,context=None):
+        email_template_obj = self.pool.get('email.template').search(cr, uid, [('model_id.model', '=', context.get('model'))], context=context)
+        if not email_template_obj :
+            ir_obj = self.pool.get('ir.model').search(cr, uid, [('model', '=', 'progress.exams')], context=context)
+            vals = {'name': context.get('name'),
+                    'model_id':ir_obj[0],
+                    }
+            self.pool.get('email.template').create(cr, uid,vals)
+
+
+
+
+
+
