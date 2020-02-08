@@ -36,7 +36,8 @@
                                             <field name="approval_date" readonly="1"/>
                                             <field name="total_name" readonly="1"/>
                                             <field name="total_major" readonly="1"/>
-                                            <field name="grade"/>
+                                            <field name="grade"  attrs="{'readonly':[('state','!=','protect')]}"/>
+                                            <field name="state" invisible="1"/>
                                         </tree>
                                     </field>
                                 </group>

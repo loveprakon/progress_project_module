@@ -3,9 +3,10 @@
     <data noupdate="1">
         <record id="ir_cron_give_grade" model="ir.cron">
             <field name="name">Give Grade</field>
-            <field name="interval_number">2</field>
-            <field name="interval_type">minutes</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>
+            <field name="priority">1</field>
             <field eval="False" name="doall"/>
             <field eval="'score.summary'" name="model"/>
             <field eval="'give_grade_i'" name="function"/>
@@ -14,14 +15,28 @@
         </record>
 
         <record id="ir_cron_send_email" model="ir.cron">
-            <field name="name">Send Email for grade is space</field>
-            <field name="interval_number">2</field>
-            <field name="interval_type">minutes</field>
+            <field name="name">Send Email For Grade Is Space</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>
+            <field name="priority">5</field>
             <field eval="False" name="doall"/>
             <field eval="'score.summary'" name="model"/>
             <field eval="'send_email'" name="function"/>
             <field eval="'(30,15,1)'" name="args"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="ir_cron_progress_exam" model="ir.cron">
+            <field name="name">Alert Progress</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="priority">2</field>
+            <field eval="False" name="doall"/>
+            <field eval="'progress.exams.line'" name="model"/>
+            <field eval="'alert_progress_exam'" name="function"/>
+            <field eval="'()'" name="args"/>
             <field name="active" eval="True"/>
         </record>
     </data>
