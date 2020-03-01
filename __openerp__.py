@@ -22,6 +22,7 @@
              'views/protect_exams.xml',
              'wizards/progress_exams_views.xml',
              'wizards/protect_exams_views.xml',
+             'wizards/get_teacher_from_web_views.xml',
              'security/ir.model.access.csv',
              'views/ir_cron.xml',
              'datas/email_temp.xml',

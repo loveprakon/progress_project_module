@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <act_window id="action_get_teacher_from_web_wizard"
+                    name="ดึงข้อมูลอาจารย์จากหน้าเว็บ"
+                    res_model="get.teacher.from.web.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <menuitem id="menu_get_teacher_from_web_wizard"
+                  parent="progrss_project_configuration"
+                  action="action_get_teacher_from_web_wizard"
+                  sequence="10"/>
+
+        <record id="view_get_teacher_from_web_wizard" model="ir.ui.view">
+            <field name="name">get.teacher.from.web.wizard.form</field>
+            <field name="model">get.teacher.from.web.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Get Teacher From Web" version="7.0">
+                    <footer>
+                        <button name="get_teacher_to_db" string="Get Teacher" type="object" class="oe_highlight"/> or
+                        <button string="Cancel" special="cancel" class="oe_link"/>
+                    </footer>
+                    <notebook>
+                        <page string="รายชื่ออาจารย์">
+                            <group colspan="4">
+                                <field name="teacher_line"  nolabel="1" widget="one2many_list">
+                                    <tree string="Menu List" editable="bottom" version="7.0">
+                                        <field name="name" />
+                                        <field name="monogram" required="1"/>
+                                        <field name="department" />
+                                        <field name="email" />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
