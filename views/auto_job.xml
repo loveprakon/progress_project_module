@@ -39,5 +39,17 @@
             <field eval="'()'" name="args"/>
             <field name="active" eval="True"/>
         </record>
+
+        <record id="ir_cron_alert_protect" model="ir.cron">
+            <field name="name">Alert Protect</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'protect.exams.line'" name="model"/>
+            <field eval="'alert_protect_exam'" name="function"/>
+            <field eval="'()'" name="args"/>
+            <field name="active" eval="True"/>
+        </record>
     </data>
 </openerp>
