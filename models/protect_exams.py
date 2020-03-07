@@ -169,7 +169,6 @@ class ProtectExamsLine(osv.Model):
         return res
 
     def alert_protect_exam(self, cr, uid, ids=None, context=None):
-        _logger.info('alert_protect_exam')
         progress_exams_obj = self.pool.get('protect.exams').search(cr, uid, [], context=context)
         email_template_obj = self.pool.get('email.template')
         template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'protect.exams')], context=context)
@@ -184,12 +183,11 @@ class ProtectExamsLine(osv.Model):
                     from protect_exams_line pxl 
                     inner join data_project dp  on pxl.name = dp.id
                     inner join input_teacher it on pxl.advisor = it.id 
-                    where dp.state   = 'approve' 
+                    where dp.state   = 'progress' 
                     and  ((pxl.date_exam + interval '7 hours') - interval '1 days')::date = (now()+interval '7 hours')::date
                  
         ''')
         for line in  cr.dictfetchall():
-            _logger.info('lineeeeeeeeeeeeeeeeee')
             body = u"""
                     <!DOCTYPE html>
                     <html>
