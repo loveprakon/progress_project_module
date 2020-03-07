@@ -139,7 +139,6 @@ class ProtectExamsLine(osv.Model):
     def write(self, cr, uid, ids, vals, context=None):
         res = super(ProtectExamsLine, self).write(cr, uid, ids, vals, context=context)
         if vals.get('point', False):
-            _logger.info('va {}'.format(type(ids[0])))
             cr.execute(''' 
                         with tb_score as (
                                     select  coalesce(pline.point,0) + coalesce(protect.point,0) as point_sum,	
@@ -168,3 +167,77 @@ class ProtectExamsLine(osv.Model):
                                               .search(cr, uid, [('id','=',line_obj[0].name.id)]))
             pj_obj[0].write({'state':'protect'})
         return res
+
+    def alert_protect_exam(self, cr, uid, ids=None, context=None):
+        progress_exams_obj = self.pool.get('protect.exams').search(cr, uid, [], context=context)
+        email_template_obj = self.pool.get('email.template')
+        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'protect.exams')], context=context)
+        values = email_template_obj.generate_email(cr, uid, template_ids[0], progress_exams_obj[0], context=context)
+        cr.execute(''' 
+                    select dp.name ,
+                            pxl.date_exam,
+                            pxl.time_exam,
+                            pxl.room,
+                            it.name advisor,
+                            it.email
+                    from protect_exams_line pxl 
+                    inner join data_project dp  on pxl.name = dp.id
+                    inner join input_teacher it on pxl.advisor = it.id 
+                    where dp.state   = 'progress' 
+                    and  ((pxl.date_exam + interval '7 hours') - interval '1 days')::date = (now()+interval '7 hours')::date
+                 
+        ''')
+        for line in  cr.dictfetchall():
+            body = u"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                    <style>
+                        .table_log {
+                            border: 1px solid black;
+                            }
+                        .table_log tr{
+                            border: 1px solid black;
+                            }
+                        .table_log td{
+                            border: 1px solid black;
+                            }
+                        .table_log th{
+                            border: 1px solid black;
+                            }
+                    </style>
+                    </head>
+                    <body>
+                    <table class="table_log">
+                    <tr>
+                        <th>ชื่อโปรเจค</th>
+                        <th>วัน</th>
+                        <th>เวลา</th>
+                        <th>ห้อง</th>
+                        <th>อาจารย์</th>
+                    </tr>
+                    <tr>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                        <th>%s</th>
+                    </tr>
+                    </table>
+                    </body>
+                    </html>
+            
+            """%(line.get('name','-'),
+                 line.get('date_exam','-'),
+                 line.get('time_exam','-'),
+                 line.get('room','-'),
+                 line.get('advisor','-'))
+            values.update({'body_html':body})
+
+            mail = "[%s,]"%(line.get('email',False))
+            values.update({'email_to':mail})
+            mail_mail_obj = self.pool.get('mail.mail')
+            msg_id = mail_mail_obj.create(cr, uid, values, context=context)
+            if msg_id:
+                mail_mail_obj.send(cr, uid, [msg_id], context=context)
+        return True
