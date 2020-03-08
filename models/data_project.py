@@ -2,6 +2,8 @@
 from openerp.osv import osv, fields
 from openerp.modules.registry import RegistryManager
 import datetime
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class DataProject(osv.Model):
@@ -236,7 +238,55 @@ class DataProject(osv.Model):
 
     def approve(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state':'approve'})
+
+
+        res = self.browse(cr, uid, ids[0], context=context)
+        email_template_obj = self.pool.get('email.template')
+        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'data.project')], context=context)
+        data_obj = self.pool.get('protect.exams').search(cr, uid, [], context=context)
+        values = email_template_obj.generate_email(cr, uid, template_ids[0], data_obj[0], context=context)
+        body = u"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                    <style>
+                        .table_log {
+                            border: 1px solid black;
+                            }
+                        .table_log tr{
+                            border: 1px solid black;
+                            }
+                        .table_log td{
+                            border: 1px solid black;
+                            }
+                        .table_log th{
+                            border: 1px solid black;
+                            }
+                    </style>
+                    </head>
+                    <body>
+                    <table class="table_log">
+                    <tr>
+                        <th>ชื่อโปรเจค</th>
+                        <th>อาจารย์</th>
+                    </tr>
+                    <tr>
+                        <th>%s</th>
+                        <th>%s</th>
+                    </tr>
+                    </table>
+                    </body>
+                    </html>
+
+            """%(res.name,res.advisor.name,)
+        mail = res.advisor.email
+        values.update({'email_to':mail,'body_html':body})
+        mail_mail_obj = self.pool.get('mail.mail')
+        msg_id = mail_mail_obj.create(cr, uid, values, context=context)
+        if msg_id:
+            mail_mail_obj.send(cr, uid, [msg_id], context=context)
         return True
+
 
 class ProviderInProject(osv.Model):
     'model for input student to project'
