@@ -9,7 +9,7 @@
             <field name="search_view_id" eval="False"/>
             <field name="context">{}</field>
             <field name="help">คลิ๊ก creat เพื่อ สร้างโปรเจค</field>
-            <field name="domain">[('name','in',('Alert Give Grade','Alert Progress',
+            <field name="domain">[('name','in',('Alert Give Grade','Alert Progress','Alert Approve',
                 'Alert Protect'))]</field>
         </record>
 

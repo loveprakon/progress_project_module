@@ -28,5 +28,12 @@
             <field name="mail_server_id" ref="ir_mail_server_gmail"/>
             <field name="subject">แจ้งเตือนสอบป้องกัน</field>
         </record>
+
+        <record id="email_template_alert_approve" model="email.template">
+            <field name="name">Alert Approve</field>
+            <field name="model_id" ref="progress_project_module.model_data_project"/>
+            <field name="mail_server_id" ref="ir_mail_server_gmail"/>
+            <field name="subject">แจ้งเตือนโปรเจค</field>
+        </record>
     </data>
 </openerp>
