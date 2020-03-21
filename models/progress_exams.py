@@ -189,7 +189,7 @@ class ProgressExamLine(osv.Model):
             from progress_exams_line pxl 
             inner join data_project dp  on pxl.name = dp.id
             inner join input_teacher it on pxl.advisor = it.id 
-            where dp.state   = 'progress' 
+            where dp.state   = 'approve'
             and  (pxl.date_exam - interval '1 days')::date = now()::date
         ''')
         for line in  cr.dictfetchall():
@@ -246,16 +246,6 @@ class ProgressExamLine(osv.Model):
             if msg_id:
                 mail_mail_obj.send(cr, uid, [msg_id], context=context)
         return True
-
-
-    # def create_email_template(self,cr, uid,context=None):
-    #     email_template_obj = self.pool.get('email.template').search(cr, uid, [('model_id.model', '=', context.get('model'))], context=context)
-    #     if not email_template_obj :
-    #         ir_obj = self.pool.get('ir.model').search(cr, uid, [('model', '=', 'progress.exams')], context=context)
-    #         vals = {'name': context.get('name'),
-    #                 'model_id':ir_obj[0],
-    #                 }
-    #         self.pool.get('email.template').create(cr, uid,vals)
 
 
 
