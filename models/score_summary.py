@@ -73,7 +73,7 @@ class ScoreSummary(osv.Model):
                                 coalesce(advisor.name,'-') as advisor
                         from ( select student_code,name
                                 from score_summary
-                                where grade = 'I'
+                                where grade is null
                             ) ss
                         left join (select student_code as student_code_in_project,
                                     data_project_id
@@ -110,7 +110,6 @@ class ScoreSummary(osv.Model):
                 })
 
             student = ''
-            mail = []
             for query_result in query_results:
                 student += '<tr><td>%s</td><td>%s' \
                           '</td><td>%s</td><td>%s</td>'%(query_result.get('student_code'),
@@ -121,12 +120,13 @@ class ScoreSummary(osv.Model):
             cr.execute('''select email
                          from input_teacher
                           where email is not null
-
             ''')
+            mail = ''
             query_results = cr.dictfetchall()
             for query_result in query_results:
-                mail.append(query_result.get('email'))
-            # body = u'<table><tbody>{}</tbody></table>'.format(student)
+                mail = mail + (query_result.get('email')) + ','
+            mail = '['+mail+']'
+            body = u'<table><tbody>{}</tbody></table>'.format(student)
             body = u"""
                 <!DOCTYPE html>
                 <html>
@@ -161,7 +161,7 @@ class ScoreSummary(osv.Model):
                 """%(student,)
 
             values.update({'body_html':body})
-            values.update({'email_recipients': mail})
+            values.update({'email_to': mail})
             mail_mail_obj = self.pool.get('mail.mail')
             msg_id = mail_mail_obj.create(cr, uid, values, context=context)
             if msg_id:
