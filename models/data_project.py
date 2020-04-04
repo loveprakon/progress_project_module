@@ -243,7 +243,7 @@ class DataProject(osv.Model):
         res = self.browse(cr, uid, ids[0], context=context)
         email_template_obj = self.pool.get('email.template')
         template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=', 'data.project')], context=context)
-        data_obj = self.pool.get('protect.exams').search(cr, uid, [], context=context)
+        data_obj = self.pool.get('data.project').search(cr, uid, [], context=context)
         values = email_template_obj.generate_email(cr, uid, template_ids[0], data_obj[0], context=context)
         body = u"""
                     <!DOCTYPE html>
